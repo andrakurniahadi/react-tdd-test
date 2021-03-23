@@ -7,6 +7,9 @@ import { LoadSurveyListSpy } from '@/domain/test'
 import { renderWithHistory } from '@/presentation/test'
 import { UnexpectedError, AccessDeniedError } from '@/domain/errors'
 
+import React from 'react'
+import { surveyResultState } from '../survey-result/components'
+
 type SutTypes = {
   history: MemoryHistory
   loadSurveyListSpy: LoadSurveyListSpy
@@ -18,7 +21,7 @@ const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
 
   const { setCurrentAccountMock } = renderWithHistory({
     history,
-    Page: () => null
+    Page: () => <SurveyList loadSurveyList= {loadSurveyListSpy}/>
   })
 
   return {
@@ -30,8 +33,8 @@ const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
 
 describe('SurveyList Component', () => {
   it('should present 4 empty items on start', async () => {
+    const component = makeSut()
     const surveyList = screen.getByTestId('survey-list')
-
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(surveyList.querySelectorAll('li:empty')).toHaveLength(4)
 
@@ -39,7 +42,10 @@ describe('SurveyList Component', () => {
   })
 
   it('should call LoadSurveyList', async () => {
+    // const component = makeSut()
     const { loadSurveyListSpy } = makeSut()
+    
+    // const surveys = loadSurveyListSpy.loadAll()
 
     expect(loadSurveyListSpy.callsCount).toBe(1)
 
@@ -49,7 +55,7 @@ describe('SurveyList Component', () => {
   it('should render SurveyItems on success', async () => {
     makeSut()
 
-    const surveyList = null
+    // const surveyList = screen.getByTestId('survey-list')
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(4)
   })
