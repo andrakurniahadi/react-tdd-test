@@ -1,5 +1,7 @@
 import faker from 'faker'
 
+import React from 'react'
+
 import { createMemoryHistory } from 'history'
 import { fireEvent, waitFor, screen } from '@testing-library/react'
 
@@ -22,14 +24,14 @@ type SutParams = {
 const history = createMemoryHistory({ initialEntries: ['/login'] })
 
 const makeSut = (params?: SutParams): SutTypes => {
-  const authenticationSpy = null
-  const validationStub = null
+  const authenticationSpy = new AuthenticationSpy()
+  const validationStub = new ValidationStub()
 
   validationStub.errorMessage = params?.validationError
 
   const { setCurrentAccountMock } = renderWithHistory({
     history,
-    Page: () => null
+    Page: () => <Login validation= {validationStub} authentication={authenticationSpy}/>
   })
 
   return {
@@ -51,6 +53,7 @@ const simulateValidSubmit = async (email = faker.internet.email(), password = fa
 describe('Login Component', () => {
   it('should start with initial state', () => {
     const validationError = faker.random.words()
+    const component = makeSut({validationError: validationError})
 
     expect(screen.getByTestId('error-wrap').children).toHaveLength(0)
     expect(screen.getByTestId('submit-button')).toBeDisabled()
