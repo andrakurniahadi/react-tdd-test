@@ -11,6 +11,7 @@ import { InvalidCredentialsError } from '@/domain/errors'
 import { ValidationStub, Helper, renderWithHistory } from '@/presentation/test'
 
 import Login from './login'
+import { populateField, testStatusForField } from '@/presentation/test/form-helper'
 
 type SutTypes = {
   authenticationSpy: AuthenticationSpy
@@ -61,6 +62,11 @@ describe('Login Component', () => {
 
   it('should show email error if validation fails', () => {
     const validationError = faker.random.words()
+    
+    // const component = makeSut({validationError: validationError})
+    // Helper.populateField('email', 'andra')
+
+    // expect(screen.getByTestId('main-error')).toEqual(validationError)
   })
 
   it('should show password error if validation fails', () => {
