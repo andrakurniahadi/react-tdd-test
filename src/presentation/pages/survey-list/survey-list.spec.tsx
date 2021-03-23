@@ -56,6 +56,7 @@ describe('SurveyList Component', () => {
     makeSut()
 
     // const surveyList = screen.getByTestId('survey-list')
+    const surveyList = null
     expect(screen.queryByTestId('error')).not.toBeInTheDocument()
     expect(surveyList.querySelectorAll('li.surveyItemWrap')).toHaveLength(4)
   })
